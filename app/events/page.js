@@ -1,49 +1,40 @@
-"use client";
+// app/events/page.js
 
-export const dynamic = "force-dynamic"; // ✅ FIX FOR VERCEL
-
-import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import EventCard from "@/components/EventCard";
 
-export default function EventsPage() {
-  const searchParams = useSearchParams();
+async function getEvents() {
+  const res = await fetch("https://qevent-backend.labs.crio.do/events", {
+    cache: "no-store",
+  });
 
-  const artistName = searchParams.get("artist");
-  const tagName = searchParams.get("tag");
+  return res.json();
+}
 
-  const [events, setEvents] = useState([]);
+export default async function EventsPage({ searchParams }) {
+  const events = await getEvents();
 
-  useEffect(() => {
-    const fetchEvents = async () => {
-      const res = await fetch("https://qevent-backend.labs.crio.do/events");
-      const data = await res.json();
+  const artistName = searchParams?.artist;
+  const tagName = searchParams?.tag;
 
-      let filtered = data;
+  let filtered = events;
 
-      // Filter by artist
-      if (artistName) {
-        filtered = filtered.filter(
-          (event) =>
-            event.artist.toLowerCase() === artistName.toLowerCase()
-        );
-      }
+  // Filter by artist
+  if (artistName) {
+    filtered = filtered.filter(
+      (event) =>
+        event.artist.toLowerCase() === artistName.toLowerCase()
+    );
+  }
 
-      // Filter by tag
-      if (tagName) {
-        filtered = filtered.filter((event) =>
-          event.tags.some(
-            (tag) =>
-              (tag.name || tag).toLowerCase() === tagName.toLowerCase()
-          )
-        );
-      }
-
-      setEvents(filtered);
-    };
-
-    fetchEvents();
-  }, [artistName, tagName]);
+  // Filter by tag
+  if (tagName) {
+    filtered = filtered.filter((event) =>
+      event.tags.some(
+        (tag) =>
+          (tag.name || tag).toLowerCase() === tagName.toLowerCase()
+      )
+    );
+  }
 
   return (
     <div className="p-6 flex flex-col items-center">
@@ -61,12 +52,12 @@ export default function EventsPage() {
       )}
 
       <div className="flex flex-wrap justify-center gap-6">
-        {events.map((event, index) => (
+        {filtered.map((event, index) => (
           <EventCard key={event?.id || index} event={event} />
         ))}
       </div>
 
-      {events.length === 0 && (
+      {filtered.length === 0 && (
         <p className="mt-6 text-gray-500">No events found.</p>
       )}
     </div>
