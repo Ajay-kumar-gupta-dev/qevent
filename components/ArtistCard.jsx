@@ -10,28 +10,21 @@ const ArtistCard = ({ artist }) => {
   };
 
   return (
-    <div className="w-full max-w-[260px] mx-auto text-center border border-slate-300 rounded-md p-5 shadow-sm hover:shadow-md transition hover:scale-105">
-
+    <div className="border p-4 rounded-md text-center">
       <img
-        className="w-20 h-20 rounded-full mx-auto mb-3 object-cover"
         src={artist.image}
         alt={artist.name}
+        className="w-20 h-20 rounded-full mx-auto"
       />
 
-      <p className="text-gray-500 text-sm">{artist.location}</p>
-      <h2 className="text-lg font-bold mt-1">{artist.name}</h2>
-
-      <p className="text-sm text-gray-600">
-        {artist.description || artist.specialization}
-      </p>
+      <h2 className="font-bold">{artist.name}</h2>
 
       <button
         onClick={handleClick}
-        className="mt-4 bg-gradient-to-r from-orange-400 to-teal-600 text-white px-4 py-2 rounded-md text-sm hover:opacity-80"
+        className="mt-3 bg-gradient-to-r from-orange-400 to-teal-600 text-white px-4 py-2 rounded-md"
       >
         View Events
       </button>
-
     </div>
   );
 };

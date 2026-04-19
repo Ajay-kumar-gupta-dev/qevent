@@ -46,7 +46,7 @@ export default function EventsPage() {
   return (
     <div className="p-6 flex flex-col items-center">
 
-      {/* Title */}
+      {/* Heading */}
       {artistName && (
         <h2 className="text-2xl font-bold mb-4">
           Events by {artistName}
@@ -68,11 +68,8 @@ export default function EventsPage() {
 
       {/* No data */}
       {events.length === 0 && (
-        <p className="mt-6 text-gray-500">
-          No events found.
-        </p>
+        <p className="mt-6 text-gray-500">No events found.</p>
       )}
-
     </div>
   );
 }
